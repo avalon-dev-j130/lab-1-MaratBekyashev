@@ -12,6 +12,11 @@ create table order(
   constraint order_pk primary key(id)
 );
 
+insert into order(id, user) values (1, 1);
+insert into order(id, user) values (2, 1);
+insert into order(id, user) values (3, 2);
+
+
 create table user(
   id       integer(10) generated always as identity,
   email    varchar(255),
@@ -21,19 +26,24 @@ create table user(
   constraint email_pk primary key(email),
   constraint info_uk unique (info)
 );
+create table userinfo(
+  id       integer(10),
+  name     varchar(255) not null,
+  surname  varchar(255) not null,
+  constraint userinfo_pk primary key (id)
+);
 
 create table roles(
   id    integer(10) generated always as identity,
   name  varchar(255),
   constraint roles_pk primary key(name),
   constraint info_uk unique (id)
-
 );
 
 create table product(
   id            integer(10) generated always as identity,
   code          varchar(255),
-  title         varchar(255),
+  title         varchar(255), --not null
   supplier      integer(10),
   initial_price double(10),
   retail_Value  double(10),
@@ -58,12 +68,6 @@ create table order2product(
   product integer(10) not null
 );
 
-create table userinfo(
-  id       integer(10),
-  name     varchar(255) not null,
-  surname  varchar(255) not null,
-  constraint userinfo_pk primary key (id)
-);
 
 alter table order add constraint order_info_fk foreign key(user) references user(id);
 alter table user add constraint user_info_fk foreign key(info) references userinfo(id);
